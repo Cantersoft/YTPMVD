@@ -27,6 +27,6 @@ YTP Midi Video for DaVinci Resolve (YTPMVD) generates YTPMV sequences in a Davin
 5. Click `GO!`
 
 
-##Limitations
+## Limitations
 
 * DaVinci Resolve's API doesn't support pitch shifting yet. Therefore, it is impossible to implement pitch shift.

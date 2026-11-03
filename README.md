@@ -18,9 +18,9 @@ YTP Midi Video for DaVinci Resolve (YTPMVD) generates YTPMV sequences in a Davin
 2. Add clips to the timeline
 3. Execute Workspace > Scripts > YTPMVD > YTPMVD_UI
 4. Configure options
-* Click "Select MIDI File" and select a midi file
-* Set the track mode to "grouped" to process video clips with linked audio as a single unit, or "linear" to process only video clips
-* Click "Auto map outputs" to sequentially assign timeline tracks to MIDI channels
-* Use the dropdown menus to assign specific channels to individual tracks
-* Use the flipping checkboxes to enable flipping and the legato checkboxes to remove gaps between clips
+ - Click "Select MIDI File" and select a midi file
+ - Set the track mode to "grouped" to process video clips with linked audio as a single unit, or "linear" to process only video clips
+ - Click "Auto map outputs" to sequentially assign timeline tracks to MIDI channels
+ - Use the dropdown menus to assign specific channels to individual tracks
+ - Use the flipping checkboxes to enable flipping and the legato checkboxes to remove gaps between clips
 5. Click "GO!"

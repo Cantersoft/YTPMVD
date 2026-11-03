@@ -25,3 +25,8 @@ YTP Midi Video for DaVinci Resolve (YTPMVD) generates YTPMV sequences in a Davin
     * Use the dropdown menus to assign specific channels to individual tracks
     * Use the flipping checkboxes to enable flipping and the legato checkboxes to remove gaps between clips
 5. Click `GO!`
+
+
+##Limitations
+
+* DaVinci Resolve's API doesn't support pitch shifting yet. Therefore, it is impossible to implement pitch shift.

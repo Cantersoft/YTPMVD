@@ -1,47 +1,43 @@
 @echo off
+setlocal
+cd /d "%~dp0"
 
-:-------------------------------------
-REM  --> Check for permissions
-    IF "%PROCESSOR_ARCHITECTURE%" EQU "amd64" (
->nul 2>&1 "%SYSTEMROOT%\SysWOW64\cacls.exe" "%SYSTEMROOT%\SysWOW64\config\system"
-) ELSE (
->nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+set "directory_scripts=%APPDATA%\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Edit\YTPMVD"
+set "directory_data=%ProgramFiles%\Blackmagic Design\YTPMVD"
+
+REM --> Check admin
+if /i "%~1"=="/admin" goto :Admin
+
+REM --> Files requiring userprofile
+if exist "%directory_scripts%" rmdir /s /q "%directory_scripts%"
+mkdir "%directory_scripts%"
+copy /y "YTPMVD_UI.py" "%directory_scripts%\" >nul
+if errorlevel 1 (
+    echo Failed to copy YTPMVD_UI.py
+    pause
+    exit /b 1
 )
+echo Installed UI script to: %directory_scripts%
 
-REM --> If error flag set, we do not have admin.
-if '%errorlevel%' NEQ '0' (
-    echo Requesting administrative privileges...
-    goto UACPrompt
-) else ( goto gotAdmin )
+REM --> Skip elevation if already admin
+fltmc >nul 2>&1 && goto :Admin
 
-:UACPrompt
-    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
-    set params= %*
-	REM  --> The user will switch to admin after we elevate and then the userprofile will be wrong, so let's capture the userprofile as it is originally.
-    echo UAC.ShellExecute "cmd.exe", "/c ""%~s0"" ""%userprofile%"" %params:"=""%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+REM --> Elevate to admin
+echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+set params= %*
+echo UAC.ShellExecute "%~s0", "%params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
 
-    "%temp%\getadmin.vbs"
-    del "%temp%\getadmin.vbs"
-    exit /B
+"%temp%\getadmin.vbs"
+del "%temp%\getadmin.vbs"
+exit /B
 
-:gotAdmin
-    pushd "%CD%"
-    CD /D "%~dp0"
-:--------------------------------------    
+:Admin
+REM --> Files requiring admin
+if exist "%directory_data%" rmdir /s /q "%directory_data%"
+mkdir "%directory_data%"
+copy /y "YTPMVE.py" "%directory_data%\" >nul
+copy /y "cantersoft.ico" "%directory_data%\" >nul
+echo Installed data files to: %directory_data%
 
-set script_interface_installation_directory="%~1\AppData\Roaming\Blackmagic Design\DaVinci Resolve\Support\Fusion\Scripts\Edit\YTPMVD"
-set data_installation_directory="%programfiles%\Blackmagic Design\YTPMVD"
-
-rmdir /s /q %data_installation_directory%
-mkdir %data_installation_directory%
-
-rmdir /s /q %script_interface_installation_directory%
-mkdir %script_interface_installation_directory% 
-
-echo Y | xcopy YTPMVD_UI.py %script_interface_installation_directory%
-echo Y | xcopy YTPMVE.py %data_installation_directory%
-echo Y | xcopy cantersoft.ico %data_installation_directory%
-
-echo %script_interface_installation_directory%
 echo Installed YTPMVD
 pause

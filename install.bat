@@ -17,7 +17,7 @@ if errorlevel 1 (
     pause
     exit /b 1
 )
-echo Installed UI script to: %directory_scripts%
+echo Installed script to: %directory_scripts%
 
 REM --> Skip elevation if already admin
 fltmc >nul 2>&1 && goto :Admin
